@@ -9,38 +9,10 @@ v0.2
 import tkinter as tk
 from math import sqrt
 from random import randint
+from settings import *
 from time import sleep
 from tkinter.messagebox import askretrycancel, askyesno, showinfo
 from tkinter.simpledialog import askstring
-
-# Settings
-WIDTH: int = 750
-HEIGHT: int = 500
-TOPLEFT_X: int = 50
-TOPLEFT_Y: int = HEIGHT - 100
-PLAYER_SIZE: int = 63
-PLAYER_ASSETS: list = ["assets/player1.png", "assets/player2.png"]  # 2bff00
-ENEMY_ASSETS: list = ["assets/enemy0.png"]  # ff5100
-PARTICLE_ASSETS: list = ["assets/star0.png"]
-ENEMY_SIZE: int = 25
-BOOST: int = -15
-SPEED: float = -5
-GRAVITY: int = 1
-GAP: float = 200
-ANIM_RATE: float = 1
-ENEMY_CHANCE: int = 10
-MAX_ENEMY_HEIGHT: int = PLAYER_SIZE * 2
-PARTICLE_CHANCE: int = 3
-MAX_ENEMIES: int = 5
-MIN_FPS: float = 60
-MAX_FPS: float = 150
-FPS_INCREASE: float = 0.1
-JUMP_KEY: list = ["<space>", "<Up>", "<Button-1>"]
-PAUSE_KEY: list = ["<Escape>", "<p>", "<Button-3>"]
-SCOREBOARD = "philipp-jumper.scores"
-MID_Y: float = HEIGHT / 2
-MID_X: float = WIDTH / 2
-GROUND: int = round(TOPLEFT_Y + (PLAYER_SIZE / 2))
 
 
 # Template for sprite items
@@ -126,6 +98,8 @@ class Player (Sprite):
             self.costume = 0
 
 # Toplevel class with game window
+
+
 class Game (tk.Frame):
     def __init__(self, master: tk.Tk):
         super().__init__(master)
