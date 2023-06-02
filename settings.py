@@ -1,4 +1,4 @@
-# Settings
+# Preferences for the Jumper game. You can edit these values to adjust the gaming experience
 WIDTH: int = 750
 HEIGHT: int = 500
 TOPLEFT_X: int = 50
@@ -12,7 +12,7 @@ BOOST: int = -15
 SPEED: float = -5
 GRAVITY: int = 1
 GAP: float = 200
-ANIM_RATE: float = 1
+ANIM_DELAY: float = 0.1
 ENEMY_CHANCE: int = 10
 MAX_ENEMY_HEIGHT: int = PLAYER_SIZE * 2
 PARTICLE_CHANCE: int = 3
