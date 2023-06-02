@@ -6,9 +6,9 @@ from time import sleep
 from tkinter.messagebox import askretrycancel, askyesno, showinfo
 from tkinter.simpledialog import askstring
 
-from Score import *
+from score import *
 from settings import *
-from Sprite import Sprite
+from sprite import Sprite
 
 
 # Figure controlled by the player
