@@ -1,5 +1,5 @@
 '''
-Brick jumper
+Brick jumper (old version)
 Philipp D.
 May 2023
 v0.1g
