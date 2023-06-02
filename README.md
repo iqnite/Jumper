@@ -1,4 +1,4 @@
-# Brick jumper
+# [Jumping T-rex](https://github.com/iqnite/Jumper)
 
 v0.2b
 
