@@ -1,4 +1,3 @@
-philipp-jumper.scores
-jumper.scores
+*.scores
 .vscode/
 __pycache__/
