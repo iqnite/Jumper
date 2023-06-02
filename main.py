@@ -6,7 +6,7 @@ from time import sleep
 from tkinter.messagebox import askretrycancel, askyesno, showinfo
 from tkinter.simpledialog import askstring
 
-from score import Score
+from score import *
 from settings import *
 from sprite import Sprite
 
@@ -80,13 +80,13 @@ class Game (tk.Frame):
 
             # Game over
             self.Cube.say("@!#?@!", 1/MIN_FPS)
-            Score.top(SCOREBOARD, self.username, self.score)
+            top(SCOREBOARD, self.username, self.score)
             rank = None
-            for k in Score.get(SCOREBOARD):
+            for k in get(SCOREBOARD):
                 if str(self.username) in k:
-                    rank = Score.get(SCOREBOARD).index(k) + 1
+                    rank = get(SCOREBOARD).index(k) + 1
                     break
-            top_score = Score.get(SCOREBOARD)[0]
+            top_score = get(SCOREBOARD)[0]
             prompt = askretrycancel(
                 title="Game over",
                 message=f"Your score: {self.score}\nYour rank: #{rank}\nHigh score: {top_score}")
