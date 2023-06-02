@@ -17,7 +17,6 @@ class Sprite:
 
     # Property is to avoid the () every time the position is called and to make the code look cleaner
     # The "setter" functions don't really set the position, they change it by the given s value
-    # Source: RealPython.com
     @property
     def x(self): return self.pos(0)
 
@@ -38,7 +37,6 @@ class Sprite:
         self.c = new
         self.stage.itemconfig(self.id, image=self.costumes[self.c])
 
-    # Thanks to Pythagoras
     def distance(self, other): return sqrt(
         ((self.x - other.x) ** 2)
         +

@@ -148,10 +148,9 @@ root = tk.Tk()
 root.title("Jumper")
 root.resizable(False, False)
 Jumper = Game(root)
-# Stop when the window is closed; Source: GeeksForGeeks.org
+# Stop when the window is closed
 root.protocol("WM_DELETE_WINDOW", Jumper.pause)
 
-# Thanks to Felix G.
 PLAYER_COSTUMES = [tk.PhotoImage(file=i) for i in PLAYER_ASSETS]
 ENEMY_COSTUMES = [tk.PhotoImage(file=i) for i in ENEMY_ASSETS]
 PARTICLE_COSTUMES = [tk.PhotoImage(file=i) for i in PARTICLE_ASSETS]
