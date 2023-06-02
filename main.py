@@ -7,7 +7,7 @@ from tkinter.messagebox import askretrycancel, askyesno, showinfo
 from tkinter.simpledialog import askstring
 
 from settings import *
-from Sprite import Sprite
+from sprite import Sprite
 
 
 # Figure controlled by the player
@@ -28,12 +28,6 @@ class Player (Sprite):
     def jump(self, event=None):
         if self.y == GROUND:  # Check if sprite is on the ground, to avoid air jumps
             self.fall = BOOST
-
-    def animate(self):
-        try:
-            self.costume += 1
-        except:
-            self.costume = 0
 
 
 # Toplevel class with game window
@@ -60,20 +54,20 @@ class Game (tk.Frame):
             self.fps = MIN_FPS
             self.score = 0
             self.c.focus()  # Jump to the window
-            runs = 0
+            self.runs = 0
             for i in PAUSE_KEY:
                 self.c.bind_all(i, self.pause)
 
             # The game starts here
             while (self.Cube.health > 0) and (not closed):
                 self.c.update()  # Refresh the screen
-                if runs == 0:
+                if self.runs == 0:
                     self.Cube.animate()
-                    runs += 1
-                elif runs >= self.fps*ANIM_DELAY:
-                    runs = 0
+                    self.runs += 1
+                elif self.runs >= self.fps*ANIM_DELAY:
+                    self.runs = 0
                 else:
-                    runs += 1
+                    self.runs += 1
                 self.Cube.sim()
                 self.make_enemy()
                 self.tick_enemies()
@@ -124,6 +118,8 @@ class Game (tk.Frame):
     def tick_enemies(self):
         for i in self.enemies:
             i.x = SPEED
+            if self.runs == 0:
+                i.animate()
             if self.Cube.distance(i) <= abs(PLAYER_SIZE + ENEMY_SIZE) / 2:
                 self.Cube.health -= 1
             if i.x <= 0:
@@ -239,7 +235,7 @@ showinfo(title="Jumper",
          message=f"""Hello {Jumper.username}!
 Press {JUMP_KEY} to jump.
 Press {PAUSE_KEY} to pause the game.
-Avoid orange cubes.
+Avoid enemies.
 Get to the top of the leaderboard!""")
 
 Jumper.loop()

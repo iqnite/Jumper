@@ -1,4 +1,5 @@
 # Template for sprite items
+
 import tkinter as tk
 from math import sqrt
 from time import sleep
@@ -49,10 +50,16 @@ class Sprite:
             self.stage.delete(self.speech)
         else:
             self.speech = self.stage.create_text(
-                self.x+20, self.y-30, font="Roboto 10", fill="white")
+                self.x+20, self.y-50, font="Roboto 10", fill="white")
             display = ""
             for i in text:
                 display += i
                 self.stage.itemconfig(self.speech, text=display)
                 self.stage.update()
                 sleep(delay)
+
+    def animate(self):
+        try:
+            self.costume += 1
+        except:
+            self.costume = 0

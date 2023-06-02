@@ -1,11 +1,12 @@
 # Preferences for the Jumper game. You can edit these values to adjust the gaming experience
+
 WIDTH: int = 750
 HEIGHT: int = 500
 TOPLEFT_X: int = 50
 TOPLEFT_Y: int = HEIGHT - 100
-PLAYER_SIZE: int = 63
-PLAYER_ASSETS: list = ["assets/player1.png", "assets/player2.png"]  # 2bff00
-ENEMY_ASSETS: list = ["assets/enemy0.png"]  # ff5100
+PLAYER_SIZE: int = 60
+PLAYER_ASSETS: list = ["assets/3.png", "assets/4.png"]
+ENEMY_ASSETS: list = ["assets/1.png", "assets/6.png"]
 PARTICLE_ASSETS: list = ["assets/star0.png"]
 ENEMY_SIZE: int = 25
 BOOST: int = -15
@@ -17,9 +18,9 @@ ENEMY_CHANCE: int = 10
 MAX_ENEMY_HEIGHT: int = PLAYER_SIZE * 2
 PARTICLE_CHANCE: int = 3
 MAX_ENEMIES: int = 5
-MIN_FPS: float = 60
-MAX_FPS: float = 150
-FPS_INCREASE: float = 0.1
+MIN_FPS: float = 100
+MAX_FPS: float = 200
+FPS_INCREASE: float = 0.5
 JUMP_KEY: list = ["<space>", "<Up>", "<Button-1>"]
 PAUSE_KEY: list = ["<Escape>", "<p>", "<Button-3>"]
 SCOREBOARD = "jumper.scores"
