@@ -2,7 +2,7 @@
 Brick jumper (old version)
 Philipp D.
 May 2023
-v0.1g
+v0.1.7
 '''
 
 
