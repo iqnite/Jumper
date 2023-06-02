@@ -2,7 +2,7 @@
 
 v0.2b
 
-*By Philipp D.*
+*By [Philipp D.](https://ggigabyte.repl.co/)*
 
 *June 2023*
 
@@ -17,4 +17,4 @@ v0.2b
 - Felix G.
 
 **Assets:**
-- Google
+- [Google](https://google.com/)
