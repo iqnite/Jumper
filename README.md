@@ -11,7 +11,7 @@ Run the `main.py` file in your Python interpreter.
 
 ## Controls
 
-In-game instructions are explained at the beginning of the game.
+Instructions are explained at the beginning of the game.
 
 ## Credits
 

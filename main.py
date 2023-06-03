@@ -132,7 +132,7 @@ class Game (tk.Frame):
 
     def pause(self, event=None):
         prompt = askyesno(title="Game paused",
-                          message="Click on 'Yes' to resume game, 'No' to exit the game.")
+                          message="Click on 'Yes' to resume game, 'No' to exit.")
         if not prompt:
             handle_close()
 
@@ -164,7 +164,8 @@ showinfo(title="Jumper",
 Press {JUMP_KEY} to jump.
 Press {PAUSE_KEY} to pause the game.
 Avoid enemies.
-Get to the top of the leaderboard!""")
+Get to the top of the leaderboard!
+Click 'OK' to play""")
 
 Jumper.loop()
 

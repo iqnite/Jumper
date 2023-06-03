@@ -1,4 +1,4 @@
-# Preferences for the Jumper game. You can edit these values to adjust the gaming experience
+# Preferences for the Jumper game. You can edit these values to adjust the palying experience
 
 WIDTH: int = 750
 HEIGHT: int = 500
