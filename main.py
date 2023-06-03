@@ -3,12 +3,24 @@
 import tkinter as tk
 from random import randint
 from time import sleep
-from tkinter.messagebox import askretrycancel, askyesno, showinfo
+from tkinter.messagebox import askretrycancel, askyesno, showinfo, showerror
 from tkinter.simpledialog import askstring
 
-from score import *
-from settings import *
-from sprite import Sprite
+try:
+    from score import *
+    from sprite import *
+except:
+    showerror(title="Error",
+              message="Could not load modules. Try downloading the game again.")
+    quit()
+
+try:
+    from settings import *
+    WIDTH; HEIGHT; TOPLEFT_X; TOPLEFT_Y; PLAYER_SIZE; PLAYER_ASSETS; ENEMY_ASSETS; PARTICLE_ASSETS; ENEMY_SIZE; BOOST; SPEED; GRAVITY; GAP; ANIM_DELAY; ENEMY_CHANCE; MAX_ENEMY_HEIGHT; PARTICLE_CHANCE; MAX_ENEMIES; MIN_FPS; MAX_FPS; FPS_INCREASE; JUMP_KEY; PAUSE_KEY; SCOREBOARD; MID_Y; MID_X; GROUND
+except:
+    showerror(title="Error",
+              message="Settings file corrupted. Try downloading the game again.")
+    quit()
 
 
 # Figure controlled by the player
