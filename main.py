@@ -63,15 +63,6 @@ except ModuleNotFoundError:
     quit()
 
 try:
-    PLAYER_COSTUMES = [tk.PhotoImage(file=i) for i in PLAYER_ASSETS]
-    ENEMY_COSTUMES = [tk.PhotoImage(file=i) for i in ENEMY_ASSETS]
-    PARTICLE_COSTUMES = [tk.PhotoImage(file=i) for i in PARTICLE_ASSETS]
-except FileNotFoundError:
-    showerror(title="Error",
-              message="Could not load graphics. Check that the specified image files have the correct path.")
-    quit()
-
-try:
     from score import *
     from sprite import *
 except ModuleNotFoundError:
@@ -226,6 +217,15 @@ root.resizable(False, False)
 Jumper = Game(root)
 # Stop when the window is closed
 root.protocol("WM_DELETE_WINDOW", Jumper.pause)
+
+try:
+    PLAYER_COSTUMES = [tk.PhotoImage(file=i) for i in PLAYER_ASSETS]
+    ENEMY_COSTUMES = [tk.PhotoImage(file=i) for i in ENEMY_ASSETS]
+    PARTICLE_COSTUMES = [tk.PhotoImage(file=i) for i in PARTICLE_ASSETS]
+except FileNotFoundError:
+    showerror(title="Error",
+              message="Could not load graphics. Check that the specified image files have the correct path.")
+    quit()
 
 if (Jumper.username == None):
     handle_close()
