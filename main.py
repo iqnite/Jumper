@@ -6,6 +6,7 @@ from time import sleep
 from tkinter.messagebox import askretrycancel, askyesno, showinfo, showerror
 from tkinter.simpledialog import askstring
 
+# Integrity checks
 try:
     from settings import *
     WIDTH
@@ -50,7 +51,7 @@ try:
     mixer.music.load(MUSIC)
 except:
     showerror(title="Error",
-              message="Could not load audio module. Try running the command 'pip3 install pygame' in your terminal.")
+              message="Could not load audio. Check that the specified sound files have the correct path. If the issue persists, try running the command 'pip3 install pygame' in your terminal.")
     quit()
 
 try:
