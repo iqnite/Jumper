@@ -1,3 +1,4 @@
 *.scores
 .vscode/
 __pycache__/
+assets/desktop.ini

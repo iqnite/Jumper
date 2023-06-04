@@ -1,6 +1,6 @@
 # [Jumping T-rex](https://github.com/iqnite/Jumper)
 
-*v1.1.0-pre.0*
+*v1.1.0-pre.2*
 
 By [Philipp D.](https://ggigabyte.repl.co/)
 
@@ -25,5 +25,6 @@ Instructions are explained at the beginning of the game.
 
 ### Assets:
 - [Google](https://google.com/)
+- [MDK](https://morgandavidking.com/)
 
 *(c) 2023 IQBit Technologies Ltd. All rights reserved.*

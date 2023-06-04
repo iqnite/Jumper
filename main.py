@@ -7,19 +7,58 @@ from tkinter.messagebox import askretrycancel, askyesno, showinfo, showerror
 from tkinter.simpledialog import askstring
 
 try:
+    from settings import *
+    WIDTH
+    HEIGHT
+    TOPLEFT_X
+    TOPLEFT_Y
+    PLAYER_SIZE
+    PLAYER_ASSETS
+    ENEMY_ASSETS
+    PARTICLE_ASSETS
+    ENEMY_SIZE
+    BOOST
+    SPEED
+    GRAVITY
+    GAP
+    ANIM_DELAY
+    ENEMY_CHANCE
+    MAX_ENEMY_HEIGHT
+    PARTICLE_CHANCE
+    MAX_ENEMIES
+    MIN_FPS
+    MAX_FPS
+    FPS_INCREASE
+    JUMP_KEY
+    PAUSE_KEY
+    SCOREBOARD
+    GROUND
+    JUMP_SOUND
+    DIE_SOUND
+    MUSIC
+    MUSIC_VOL
+except:
+    showerror(title="Error",
+              message="Configuration file corrupted. Try downloading the game again.")
+    quit()
+
+try:
+    from pygame import mixer
+    mixer.init()
+    jumpsound = mixer.Sound(JUMP_SOUND)
+    diesound = mixer.Sound(DIE_SOUND)
+    mixer.music.load(MUSIC)
+except:
+    showerror(title="Error",
+              message="Could not load audio module. Try running the command 'pip3 install pygame' in your terminal.")
+    quit()
+
+try:
     from score import *
     from sprite import *
 except:
     showerror(title="Error",
               message="Could not load modules. Try downloading the game again.")
-    quit()
-
-try:
-    from settings import *
-    WIDTH; HEIGHT; TOPLEFT_X; TOPLEFT_Y; PLAYER_SIZE; PLAYER_ASSETS; ENEMY_ASSETS; PARTICLE_ASSETS; ENEMY_SIZE; BOOST; SPEED; GRAVITY; GAP; ANIM_DELAY; ENEMY_CHANCE; MAX_ENEMY_HEIGHT; PARTICLE_CHANCE; MAX_ENEMIES; MIN_FPS; MAX_FPS; FPS_INCREASE; JUMP_KEY; PAUSE_KEY; SCOREBOARD; MID_Y; MID_X; GROUND
-except:
-    showerror(title="Error",
-              message="Settings file corrupted. Try downloading the game again.")
     quit()
 
 
@@ -41,6 +80,7 @@ class Player (Sprite):
     def jump(self, event=None):
         if self.y == GROUND:  # Check if sprite is on the ground, to avoid air jumps
             self.fall = BOOST
+            jumpsound.play()
 
 
 # Toplevel class with game window
@@ -60,7 +100,7 @@ class Game (tk.Frame):
             self.c.create_line(
                 0, GROUND + (PLAYER_SIZE / 2), WIDTH, GROUND + (PLAYER_SIZE / 2), fill="white")
             self.score_display = self.c.create_text(
-                MID_X, 20, font="Helvetica", fill="white")
+                WIDTH / 2, 20, font="Helvetica", fill="white")
             self.Cube = Player(self.c)
             self.enemies = []
             self.particles = []
@@ -72,6 +112,8 @@ class Game (tk.Frame):
                 self.c.bind_all(i, self.pause)
 
             # The game starts here
+            mixer.music.play(-1)
+            mixer.music.set_volume(MUSIC_VOL)
             while (self.Cube.health > 0) and (not closed):
                 self.c.update()  # Refresh the screen
                 if self.runs == 0:
@@ -91,6 +133,8 @@ class Game (tk.Frame):
                 sleep(1/self.fps)
 
             # Game over
+            mixer.music.stop()
+            diesound.play()
             self.Cube.say("@!#?@!", 1/MIN_FPS)
             top(SCOREBOARD, self.username, self.score)
             rank = None
@@ -177,7 +221,7 @@ Press {JUMP_KEY} to jump.
 Press {PAUSE_KEY} to pause the game.
 Avoid enemies.
 Get to the top of the leaderboard!
-Click 'OK' to play""")
+Click 'OK' to play.""")
 
 Jumper.loop()
 
