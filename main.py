@@ -187,8 +187,10 @@ class Game (tk.Frame):
                                   text=f"Score: {self.score}")
 
     def pause(self, event=None):
+        mixer.music.pause()
         prompt = askyesno(title="Game paused",
                           message="Click on 'Yes' to resume game, 'No' to exit.")
+        mixer.music.unpause()
         if not prompt:
             handle_close()
 
