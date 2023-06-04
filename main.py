@@ -38,26 +38,43 @@ try:
     DIE_SOUND
     MUSIC
     MUSIC_VOL
-except:
+except NameError:
     showerror(title="Error",
               message="Configuration file corrupted. Try downloading the game again.")
+    quit()
+except ModuleNotFoundError:
+    showerror(title="Error",
+              message="Configuration file not found. Try downloading the game again.")
     quit()
 
 try:
     from pygame import mixer
     mixer.init()
-    jumpsound = mixer.Sound(JUMP_SOUND)
-    diesound = mixer.Sound(DIE_SOUND)
+    JUMPSOUND = mixer.Sound(JUMP_SOUND)
+    DIESOUND = mixer.Sound(DIE_SOUND)
     mixer.music.load(MUSIC)
-except:
+except FileNotFoundError:
     showerror(title="Error",
-              message="Could not load audio. Check that the specified sound files have the correct path. If the issue persists, try running the command 'pip3 install pygame' in your terminal.")
+              message="Could not load audio. Check that the specified sound files have the correct path.")
+    quit()
+except ModuleNotFoundError:
+    showerror(title="Error",
+              message="Try running the command 'pip3 install pygame' in your terminal.")
+    quit()
+
+try:
+    PLAYER_COSTUMES = [tk.PhotoImage(file=i) for i in PLAYER_ASSETS]
+    ENEMY_COSTUMES = [tk.PhotoImage(file=i) for i in ENEMY_ASSETS]
+    PARTICLE_COSTUMES = [tk.PhotoImage(file=i) for i in PARTICLE_ASSETS]
+except FileNotFoundError:
+    showerror(title="Error",
+              message="Could not load graphics. Check that the specified image files have the correct path.")
     quit()
 
 try:
     from score import *
     from sprite import *
-except:
+except ModuleNotFoundError:
     showerror(title="Error",
               message="Could not load modules. Try downloading the game again.")
     quit()
@@ -81,7 +98,7 @@ class Player (Sprite):
     def jump(self, event=None):
         if self.y == GROUND:  # Check if sprite is on the ground, to avoid air jumps
             self.fall = BOOST
-            jumpsound.play()
+            JUMPSOUND.play()
 
 
 # Toplevel class with game window
@@ -113,7 +130,7 @@ class Game (tk.Frame):
                 self.c.bind_all(i, self.pause)
 
             # The game starts here
-            mixer.music.play(-1)
+            mixer.music.play(-1)  # '-1' makes the sound repeat infinitely
             mixer.music.set_volume(MUSIC_VOL)
             while (self.Cube.health > 0) and (not closed):
                 self.c.update()  # Refresh the screen
@@ -135,7 +152,7 @@ class Game (tk.Frame):
 
             # Game over
             mixer.music.stop()
-            diesound.play()
+            DIESOUND.play()
             self.Cube.say("@!#?@!", 1/MIN_FPS)
             top(SCOREBOARD, self.username, self.score)
             rank = None
@@ -209,10 +226,6 @@ root.resizable(False, False)
 Jumper = Game(root)
 # Stop when the window is closed
 root.protocol("WM_DELETE_WINDOW", Jumper.pause)
-
-PLAYER_COSTUMES = [tk.PhotoImage(file=i) for i in PLAYER_ASSETS]
-ENEMY_COSTUMES = [tk.PhotoImage(file=i) for i in ENEMY_ASSETS]
-PARTICLE_COSTUMES = [tk.PhotoImage(file=i) for i in PARTICLE_ASSETS]
 
 if (Jumper.username == None):
     handle_close()
