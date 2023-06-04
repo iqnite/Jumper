@@ -10,6 +10,7 @@ GROUND: int = round(TOPLEFT_Y + (PLAYER_SIZE / 2))  # The minimum height for ite
 PLAYER_ASSETS: list = ["assets/3.png", "assets/4.png"]  # Animation pictures for the player
 ENEMY_ASSETS: list = ["assets/1.png", "assets/6.png"]  # Animation pictures for the enemies
 PARTICLE_ASSETS: list = ["assets/star0.png"]  # Picture for the stars
+BACKGROUND: str = "black"  # Background color
 JUMP_SOUND: str = "assets/jump.wav"  # Sound to play when the player jumps
 DIE_SOUND: str = "assets/die.wav"  # Sound to play when the player hits an enemy
 MUSIC: str = "assets/loop.mp3"  # Background music

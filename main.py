@@ -38,6 +38,7 @@ try:
     DIE_SOUND
     MUSIC
     MUSIC_VOL
+    BACKGROUND
 except NameError:
     showerror(title="Error",
               message="Configuration file corrupted. Try downloading the game again.")
@@ -104,7 +105,7 @@ class Game (tk.Frame):
     def loop(self):
         while not closed:
             self.c = tk.Canvas(self.master, width=WIDTH,
-                               height=HEIGHT, background="black")
+                               height=HEIGHT, background=BACKGROUND)
             self.c.pack(fill="both", expand=True)
             self.c.create_line(
                 0, GROUND + (PLAYER_SIZE / 2), WIDTH, GROUND + (PLAYER_SIZE / 2), fill="white")
