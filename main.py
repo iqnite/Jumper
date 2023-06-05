@@ -225,13 +225,7 @@ Get to the top of the leaderboard!
 Click 'OK' to play.""")
 
 # Main window
-closed = False
 root = tk.Tk()
-root.title("Jumper")
-root.resizable(False, False)
-Jumper = Game(root, username)
-# Stop when the window is closed
-root.protocol("WM_DELETE_WINDOW", Jumper.pause)
 
 try:
     PLAYER_COSTUMES = [tk.PhotoImage(file=i) for i in PLAYER_ASSETS]
@@ -241,6 +235,14 @@ except FileNotFoundError:
     showerror(title="Error",
               message="Could not load graphics. Check that the specified image files have the correct path.")
     quit()
+
+root.title("Jumper")
+root.iconphoto(False, PLAYER_COSTUMES[0])
+root.resizable(False, False)
+Jumper = Game(root, username)
+# Stop when the window is closed
+closed = False
+root.protocol("WM_DELETE_WINDOW", Jumper.pause)
 
 Jumper.loop()
 
