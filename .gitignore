@@ -2,3 +2,8 @@
 .vscode/
 __pycache__/
 assets/desktop.ini
+poetry.lock
+pyproject.toml
+.replit
+replit.nix
+venv/
