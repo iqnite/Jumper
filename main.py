@@ -51,8 +51,8 @@ except ModuleNotFoundError:
 try:
     from pygame import mixer
     mixer.init()
-    JUMPSOUND = mixer.Sound(JUMP_SOUND)
-    DIESOUND = mixer.Sound(DIE_SOUND)
+    JUMPSFX = mixer.Sound(JUMP_SOUND)
+    DIESFX = mixer.Sound(DIE_SOUND)
     mixer.music.load(MUSIC)
 except FileNotFoundError:
     showerror(title="Error",
@@ -90,16 +90,15 @@ class Player (Sprite):
     def jump(self, event=None):
         if self.y == GROUND:  # Check if sprite is on the ground, to avoid air jumps
             self.fall = BOOST
-            JUMPSOUND.play()
+            JUMPSFX.play()
 
 
 # Toplevel class with game window
 class Game (tk.Frame):
-    def __init__(self, master: tk.Tk):
+    def __init__(self, master: tk.Tk, username):
         super().__init__(master)
         self.pack(fill="both", expand=True)
-        self.username = askstring(title="Welcome!",
-                                  prompt="What's your name?")
+        self.username = username
 
     # Main loop
     def loop(self):
@@ -144,7 +143,7 @@ class Game (tk.Frame):
 
             # Game over
             mixer.music.stop()
-            DIESOUND.play()
+            DIESFX.play()
             self.Cube.say("@!#?@!", 1/MIN_FPS)
             top(SCOREBOARD, self.username, self.score)
             rank = None
@@ -210,12 +209,23 @@ def handle_close():
     closed = True
 
 
+username = askstring(title="Welcome!",
+                     prompt="What's your name?")
+
+showinfo(title="Jumper",
+         message=f"""Hello {username}!
+Press {JUMP_KEY} to jump.
+Press {PAUSE_KEY} to pause the game.
+Avoid enemies.
+Get to the top of the leaderboard!
+Click 'OK' to play.""")
+
 # Main window
 closed = False
 root = tk.Tk()
 root.title("Jumper")
 root.resizable(False, False)
-Jumper = Game(root)
+Jumper = Game(root, username)
 # Stop when the window is closed
 root.protocol("WM_DELETE_WINDOW", Jumper.pause)
 
@@ -231,14 +241,6 @@ except FileNotFoundError:
 if (Jumper.username == None):
     handle_close()
     quit()
-
-showinfo(title="Jumper",
-         message=f"""Hello {Jumper.username}!
-Press {JUMP_KEY} to jump.
-Press {PAUSE_KEY} to pause the game.
-Avoid enemies.
-Get to the top of the leaderboard!
-Click 'OK' to play.""")
 
 Jumper.loop()
 
