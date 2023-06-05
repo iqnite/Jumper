@@ -1,12 +1,12 @@
 # Template for sprite items
 
-import tkinter as tk
+from tkinter import Canvas
 from math import sqrt
 from time import sleep
 
 
 class Sprite:
-    def __init__(self, stage: tk.Canvas, x: int, y: int, costumes: list, start_health: float = 1):
+    def __init__(self, stage: Canvas, x: int, y: int, costumes: list, start_health: float = 1):
         self.stage = stage
         self.health = start_health
         self.costumes = costumes
