@@ -212,6 +212,10 @@ def handle_close():
 username = askstring(title="Welcome!",
                      prompt="What's your name?")
 
+if (username == None):
+    handle_close()
+    quit()
+
 showinfo(title="Jumper",
          message=f"""Hello {username}!
 Press {JUMP_KEY} to jump.
@@ -236,10 +240,6 @@ try:
 except FileNotFoundError:
     showerror(title="Error",
               message="Could not load graphics. Check that the specified image files have the correct path.")
-    quit()
-
-if (Jumper.username == None):
-    handle_close()
     quit()
 
 Jumper.loop()
