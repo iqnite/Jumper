@@ -210,7 +210,7 @@ def handle_close():
 
 
 username = askstring(title="Welcome!",
-                     prompt="What's your name?").strip(":", "\n")
+                     prompt="What's your name?").strip(":").strip("\n")
 
 if (username == None):
     handle_close()
