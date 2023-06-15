@@ -210,11 +210,13 @@ def handle_close():
 
 
 username = askstring(title="Welcome!",
-                     prompt="What's your name?").strip(":").strip("\n")
+                     prompt="What's your name?")
 
 if (username == None):
     handle_close()
     quit()
+else:
+    username = username.strip(":").strip("\n")
 
 showinfo(title="Jumper",
          message=f"""Hello {username}!
