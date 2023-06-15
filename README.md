@@ -1,6 +1,6 @@
 # [Jumping T-rex](https://github.com/iqnite/Jumper)
 
-*v1.1.1*
+*v1.1.2*
 
 By [Philipp D.](https://ggigabyte.repl.co/)
 
