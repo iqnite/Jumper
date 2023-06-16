@@ -212,11 +212,9 @@ def handle_close():
 username = askstring(title="Welcome!",
                      prompt="What's your name?")
 
-if (username == None):
+if username == None:
     handle_close()
     quit()
-else:
-    username = username.replace(":\n")
 
 showinfo(title="Jumper",
          message=f"""Hello {username}!
