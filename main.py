@@ -216,7 +216,7 @@ if (username == None):
     handle_close()
     quit()
 else:
-    username = username.strip(":").strip("\n")
+    username = username.replace(":\n")
 
 showinfo(title="Jumper",
          message=f"""Hello {username}!
