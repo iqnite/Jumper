@@ -209,12 +209,14 @@ def handle_close():
     closed = True
 
 
-username = askstring(title="Welcome!",
-                     prompt="What's your name?")
-
-if username == None:
-    handle_close()
-    quit()
+while True:
+    if (username := askstring(title="Welcome!", prompt="What's your name?")) == None:
+        handle_close()
+        quit()
+    elif ":" in username:
+        showerror(title="INvalid input", message="Username cannot contain character ':'.")
+    else:
+        break
 
 showinfo(title="Jumper",
          message=f"""Hello {username}!
