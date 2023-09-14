@@ -214,7 +214,7 @@ while True:
         handle_close()
         quit()
     elif ":" in username:
-        showerror(title="INvalid input", message="Username cannot contain character ':'.")
+        showerror(title="Invalid input", message="Username cannot contain character ':'.")
     else:
         break
 
