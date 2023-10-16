@@ -1,8 +1,6 @@
 # [Jumping T-rex](https://github.com/iqnite/Jumper)
 
-*v1.1.1*
-
-By [Philipp D.](https://ggigabyte.repl.co/)
+By [Philipp D.](https://iqnite.github.io/)
 
 ## How to install
 This game is portable and no installation is required. You can [download a stable release](https://github.com/iqnite/Jumper/releases) to have a game (hopefully) without bugs. Or, if you're an advanced user, you can test the latest development version by cloning the repository to get live updates with the newest features: Click on the green `Code` button on the [repository page](https://github.com/iqnite/Jumper) and follow the instructions.
@@ -13,7 +11,6 @@ After that, you can play the game by double-clicking on the `main.py` file. You 
 Use the following resources to install the dependencies required to run the game:
 - [Install Python 3](https://www.python.org/downloads/)
 - [Install Pygame](https://www.pygame.org/wiki/GettingStarted)
-- [Install Git](https://github.com/git-guides/install-git)
 
 <!--<details>
 <summary><b>Getting error messages?</b></summary>
