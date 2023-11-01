@@ -8,37 +8,7 @@ from tkinter.simpledialog import askstring
 
 # Integrity checks
 try:
-    from settings import *
-    WIDTH
-    HEIGHT
-    TOPLEFT_X
-    TOPLEFT_Y
-    PLAYER_SIZE
-    PLAYER_ASSETS
-    ENEMY_ASSETS
-    PARTICLE_ASSETS
-    ENEMY_SIZE
-    BOOST
-    SPEED
-    GRAVITY
-    GAP
-    ANIM_DELAY
-    ENEMY_CHANCE
-    MAX_ENEMY_HEIGHT
-    PARTICLE_CHANCE
-    MAX_ENEMIES
-    MIN_FPS
-    MAX_FPS
-    FPS_INCREASE
-    JUMP_KEY
-    PAUSE_KEY
-    SCOREBOARD
-    GROUND
-    JUMP_SOUND
-    DIE_SOUND
-    MUSIC
-    MUSIC_VOL
-    BACKGROUND
+    from settings import WIDTH, HEIGHT, TOPLEFT_X, TOPLEFT_Y, PLAYER_SIZE, PLAYER_ASSETS, ENEMY_ASSETS, PARTICLE_ASSETS, ENEMY_SIZE, BOOST, SPEED, GRAVITY, GAP, ANIM_DELAY, ENEMY_CHANCE, MAX_ENEMY_HEIGHT, PARTICLE_CHANCE, MAX_ENEMIES, MIN_FPS, MAX_FPS, FPS_INCREASE, JUMP_KEY, PAUSE_KEY, SCOREBOARD, GROUND, JUMP_SOUND, DIE_SOUND, MUSIC, MUSIC_VOL, BACKGROUND
 except NameError:
     showerror(title="Error",
               message="Configuration file corrupted. Try downloading the game again.")
