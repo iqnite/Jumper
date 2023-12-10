@@ -30,7 +30,7 @@ except FileNotFoundError:
     quit()
 except ModuleNotFoundError:
     showerror(title="Error",
-              message="Try running the command 'pip3 install pygame' in your terminal.")
+              message="No Pygame installation found. Try running the command 'pip3 install pygame' in your terminal.")
     quit()
 
 try:
@@ -98,7 +98,7 @@ class Game (tk.Frame):
                 if self.runs == 0:
                     self.Cube.animate()
                     self.runs += 1
-                elif self.runs >= self.fps*ANIM_DELAY:
+                elif self.runs >= self.fps * ANIM_DELAY:
                     self.runs = 0
                 else:
                     self.runs += 1
@@ -109,7 +109,7 @@ class Game (tk.Frame):
                 self.tick_particles()
                 if self.fps < MAX_FPS:
                     self.fps += FPS_INCREASE
-                sleep(1/self.fps)
+                sleep((1 / self.fps) if self.fps > 0 else 0)
 
             # Game over
             mixer.music.stop()
@@ -137,7 +137,7 @@ class Game (tk.Frame):
         else:
             return
         self.enemies.append(
-            Sprite(self.c, WIDTH, GROUND-randint(0, MAX_ENEMY_HEIGHT), ENEMY_COSTUMES))
+            Sprite(self.c, WIDTH, GROUND - randint(0, MAX_ENEMY_HEIGHT), ENEMY_COSTUMES))
 
     def make_particle(self):
         if randint(0, PARTICLE_CHANCE) == 0:
