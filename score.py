@@ -1,30 +1,33 @@
-# Functions for score management
+"""
+Functions for score management
+"""
+
 
 def sort(lst):
     if len(lst) < 1:
         return lst
 
     # Clean list from invalid lines
-    for l in range(len(lst)):
+    for i, line in enumerate(lst):
         try:
-            if not (':' in lst[l]):
-                del lst[l]
-            if lst[l] == '\n':
-                del lst[l]
-        except:
+            if not ":" in line:
+                del lst[i]
+            if line == "\n":
+                del lst[i]
+        except IndexError:
             pass
 
-    for j in range(len(lst)):
-        for k in range(len(lst)-1):
+    for _ in range(len(lst)):
+        for k in range(len(lst) - 1):
             item1 = lst[k]
-            item1t = float((item1.split(':')[1]))
-            if k != len(lst)-1:
-                item2 = lst[k+1]
-                item2t = float((item2.split(':')[1]))
+            item1t = float((item1.split(":")[1]))
+            if k != len(lst) - 1:
+                item2 = lst[k + 1]
+                item2t = float((item2.split(":")[1]))
                 if item1t < item2t:
                     # Swap items
                     lst[k] = str(item2)
-                    lst[k+1] = str(item1)
+                    lst[k + 1] = str(item1)
 
     # Remove duplicates
     names = []
@@ -39,31 +42,26 @@ def sort(lst):
     return lst
 
 
-def top(f, n, s):
+def save(file_path, player_name, score):
+    scores = []
     try:
-        file = open(f, 'r')
-    except:
-        file = open(f, 'x')
-        scores = []
-    else:
-        scores = file.readlines()
+        with open(file_path, "r", encoding="utf-8") as file:
+            scores = file.readlines()
+    except FileNotFoundError:
+        with open(file_path, "x", encoding="utf-8") as file:
+            pass
     finally:
-        if n != "" and n != None:
-            scores.append(f"{n}:{s}")
+        if player_name:
+            scores.append(f"{player_name}:{score}")
         scores = sort(scores)
-        file = open(f, 'w')
-        for i in scores:
-            file.write(str(i).strip('\n') + '\n')
-        file.flush()
-        file.close()
+        with open(file_path, "w", encoding="utf-8") as file:
+            for i in scores:
+                file.write(str(i).strip("\n") + "\n")
 
 
-def get(f):
+def get(file_path):
     try:
-        fobj = open(f, 'r')
-    except:
+        with open(file_path, "r", encoding="utf-8") as fobj:
+            return fobj.readlines()
+    except FileNotFoundError:
         return [""]
-    else:
-        lst = fobj.readlines()
-        fobj.close()
-        return lst

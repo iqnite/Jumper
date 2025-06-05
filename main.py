@@ -1,5 +1,8 @@
-# Main game
+"""
+Main game
+"""
 
+import sys
 import tkinter as tk
 from random import randint
 from time import sleep
@@ -8,42 +11,83 @@ from tkinter.simpledialog import askstring
 
 # Integrity checks
 try:
-    from settings import WIDTH, HEIGHT, TOPLEFT_X, TOPLEFT_Y, PLAYER_SIZE, PLAYER_ASSETS, ENEMY_ASSETS, PARTICLE_ASSETS, ENEMY_SIZE, BOOST, SPEED, GRAVITY, GAP, ANIM_DELAY, ENEMY_CHANCE, MAX_ENEMY_HEIGHT, PARTICLE_CHANCE, MAX_ENEMIES, MIN_FPS, MAX_FPS, FPS_INCREASE, JUMP_KEY, PAUSE_KEY, SCOREBOARD, GROUND, JUMP_SOUND, DIE_SOUND, MUSIC, MUSIC_VOL, BACKGROUND
+    from settings import (
+        WIDTH,
+        HEIGHT,
+        TOPLEFT_X,
+        TOPLEFT_Y,
+        PLAYER_SIZE,
+        PLAYER_ASSETS,
+        ENEMY_ASSETS,
+        PARTICLE_ASSETS,
+        ENEMY_SIZE,
+        BOOST,
+        SPEED,
+        GRAVITY,
+        GAP,
+        ANIM_DELAY,
+        ENEMY_CHANCE,
+        MAX_ENEMY_HEIGHT,
+        PARTICLE_CHANCE,
+        MAX_ENEMIES,
+        MIN_FPS,
+        MAX_FPS,
+        FPS_INCREASE,
+        JUMP_KEY,
+        PAUSE_KEY,
+        SCOREBOARD,
+        GROUND,
+        JUMP_SOUND,
+        DIE_SOUND,
+        MUSIC,
+        MUSIC_VOL,
+        BACKGROUND,
+    )
 except NameError:
-    showerror(title="Error",
-              message="Configuration file corrupted. Try downloading the game again.")
-    quit()
+    showerror(
+        title="Error",
+        message="Configuration file corrupted. Try downloading the game again.",
+    )
+    sys.exit()
 except ModuleNotFoundError:
-    showerror(title="Error",
-              message="Configuration file not found. Try downloading the game again.")
-    quit()
+    showerror(
+        title="Error",
+        message="Configuration file not found. Try downloading the game again.",
+    )
+    sys.exit()
 
 try:
     from pygame import mixer
+
     mixer.init()
     JUMPSFX = mixer.Sound(JUMP_SOUND)
     DIESFX = mixer.Sound(DIE_SOUND)
     mixer.music.load(MUSIC)
 except FileNotFoundError:
-    showerror(title="Error",
-              message="Could not load audio. Check that the specified sound files have the correct path.")
-    quit()
+    showerror(
+        title="Error",
+        message="Could not load audio. Check that the specified sound files have the correct path.",
+    )
+    sys.exit()
 except ModuleNotFoundError:
-    showerror(title="Error",
-              message="No Pygame installation found. Try running the command 'pip3 install pygame' in your terminal.")
-    quit()
+    showerror(
+        title="Error",
+        message="No Pygame installation found. Try running 'pip3 install pygame' in your terminal.",
+    )
+    sys.exit()
 
 try:
-    from score import *
-    from sprite import *
+    import score
+    from sprite import Sprite
 except ModuleNotFoundError:
-    showerror(title="Error",
-              message="Could not load modules. Try downloading the game again.")
-    quit()
+    showerror(
+        title="Error", message="Could not load modules. Try downloading the game again."
+    )
+    sys.exit()
 
 
 # Figure controlled by the player
-class Player (Sprite):
+class Player(Sprite):
     def __init__(self, stage: tk.Canvas):
         super().__init__(stage, TOPLEFT_X, TOPLEFT_Y, PLAYER_COSTUMES)
         for i in JUMP_KEY:
@@ -57,52 +101,55 @@ class Player (Sprite):
         while self.y > GROUND:
             self.y = -1
 
-    def jump(self, event=None):
+    def jump(self, *_):
         if self.y == GROUND:  # Check if sprite is on the ground, to avoid air jumps
             self.fall = BOOST
             JUMPSFX.play()
 
 
 # Toplevel class with game window
-class Game (tk.Frame):
-    def __init__(self, master: tk.Tk, username):
-        super().__init__(master)
-        self.pack(fill="both", expand=True)
-        self.username = username
+class Game(tk.Frame):
+    def __init__(self, master: tk.Tk, player_name: str):
+        self.master = master
+        super().__init__(self.master)
+        self.pack(expand=True, fill="both")
+        self.master.title("Jumper")
+        self.master.iconphoto(False, PLAYER_COSTUMES[0])
+        self.master.resizable(False, False)
+        # Stop when the window is closed
+        self.master.protocol("WM_DELETE_WINDOW", self.pause)
+        self.username = player_name
+        self.cube = None
+        self.enemies = []
+        self.particles = []
+        self.score_display = None
+        self.score = 0
+        self.runs = 0
+        self.fps = MIN_FPS
+        self.canvas = None
 
     # Main loop
     def loop(self):
-        while not closed:
-            self.c = tk.Canvas(self.master, width=WIDTH,
-                               height=HEIGHT, background=BACKGROUND)
-            self.c.pack(fill="both", expand=True)
-            self.c.create_line(
-                0, GROUND + (PLAYER_SIZE / 2), WIDTH, GROUND + (PLAYER_SIZE / 2), fill="white")
-            self.score_display = self.c.create_text(
-                WIDTH / 2, 20, font="Helvetica", fill="white")
-            self.Cube = Player(self.c)
-            self.enemies = []
-            self.particles = []
-            self.fps = MIN_FPS
-            self.score = 0
-            self.c.focus()  # Jump to the window
-            self.runs = 0
+        while True:
+            self.setup()
+            assert self.canvas is not None
             for i in PAUSE_KEY:
-                self.c.bind_all(i, self.pause)
+                self.canvas.bind_all(i, self.pause)
 
             # The game starts here
+            assert self.cube is not None
             mixer.music.play(-1)  # '-1' makes the sound repeat infinitely
             mixer.music.set_volume(MUSIC_VOL)
-            while (self.Cube.health > 0) and (not closed):
-                self.c.update()  # Refresh the screen
+            while self.cube.health > 0:
+                self.canvas.update()  # Refresh the screen
                 if self.runs == 0:
-                    self.Cube.animate()
+                    self.cube.animate()
                     self.runs += 1
                 elif self.runs >= self.fps * ANIM_DELAY:
                     self.runs = 0
                 else:
                     self.runs += 1
-                self.Cube.sim()
+                self.cube.sim()
                 self.make_enemy()
                 self.tick_enemies()
                 self.make_particle()
@@ -114,89 +161,123 @@ class Game (tk.Frame):
             # Game over
             mixer.music.stop()
             DIESFX.play()
-            self.Cube.say("@!#?@!", 1/MIN_FPS)
-            top(SCOREBOARD, self.username, self.score)
+            self.cube.say("@!#?@!", 1 / MIN_FPS)
+            score.save(SCOREBOARD, self.username, self.score)
             rank = None
-            for k in get(SCOREBOARD):
+            for k in score.get(SCOREBOARD):
                 if str(self.username) in k:
-                    rank = get(SCOREBOARD).index(k) + 1
+                    rank = score.get(SCOREBOARD).index(k) + 1
                     break
-            top_score = get(SCOREBOARD)[0]
+            top_score = score.get(SCOREBOARD)[0]
             prompt = askretrycancel(
                 title="Game over",
-                message=f"Your score: {self.score}\nYour rank: #{rank}\nHigh score: {top_score}")
+                message=f"Your score: {self.score}\nYour rank: #{rank}\nHigh score: {top_score}",
+            )
             if not prompt:
-                handle_close()
-            self.c.destroy()
+                sys.exit()
+            self.canvas.destroy()
+
+    def setup(self):
+        self.canvas = tk.Canvas(
+            self.master, width=WIDTH, height=HEIGHT, background=BACKGROUND
+        )
+        self.canvas.pack(fill="both", expand=True)
+        self.canvas.create_line(
+            0,
+            GROUND + (PLAYER_SIZE / 2),
+            WIDTH,
+            GROUND + (PLAYER_SIZE / 2),
+            fill="white",
+        )
+        self.score_display = self.canvas.create_text(
+            WIDTH / 2, 20, font="Helvetica", fill="white"
+        )
+        self.cube = Player(self.canvas)
+        self.enemies: list[Sprite] = []
+        self.particles: list[Sprite] = []
+        self.fps = MIN_FPS
+        self.score = 0
+        self.runs = 0
+        self.canvas.focus()  # Jump to the window
 
     def make_enemy(self):
+        assert self.canvas is not None
         if (randint(0, ENEMY_CHANCE) == 0) and (len(self.enemies) < MAX_ENEMIES):
             if len(self.enemies) > 0:
-                if not (self.enemies[-1].x <= WIDTH - GAP):
+                if not self.enemies[-1].x <= WIDTH - GAP:
                     return
         else:
             return
         self.enemies.append(
-            Sprite(self.c, WIDTH, GROUND - randint(0, MAX_ENEMY_HEIGHT), ENEMY_COSTUMES))
+            Sprite(
+                self.canvas,
+                WIDTH,
+                GROUND - randint(0, MAX_ENEMY_HEIGHT),
+                ENEMY_COSTUMES,
+            )
+        )
 
     def make_particle(self):
+        assert self.canvas is not None
         if randint(0, PARTICLE_CHANCE) == 0:
-            self.particles.append(Sprite(self.c, WIDTH, randint(
-                0, GROUND), PARTICLE_COSTUMES))
+            self.particles.append(
+                Sprite(self.canvas, WIDTH, randint(0, GROUND), PARTICLE_COSTUMES)
+            )
 
     def tick_particles(self):
-        for j in self.particles:
-            j.x = SPEED
-            if j.x <= 0:
-                self.c.delete(self.particles[0].id)
+        assert self.canvas is not None
+        for particle in self.particles:
+            particle.x = SPEED
+            if particle.x <= 0:
+                self.canvas.delete(self.particles[0].id)
                 del self.particles[0]
 
     def tick_enemies(self):
-        for i in self.enemies:
-            i.x = SPEED
+        assert self.canvas is not None
+        assert self.cube is not None
+        assert self.score_display is not None
+        for enemy in self.enemies:
+            enemy.x = SPEED
             if self.runs == 0:
-                i.animate()
-            if self.Cube.distance(i) <= abs(PLAYER_SIZE + ENEMY_SIZE) / 2:
-                self.Cube.health -= 1
-            if i.x <= 0:
-                self.c.delete(self.enemies[0].id)
-                del self.enemies[0]
+                enemy.animate()
+            if self.cube.distance(enemy) <= abs(PLAYER_SIZE + ENEMY_SIZE) / 2:
+                self.cube.health -= 1
+            if enemy.x <= 0:
+                self.canvas.delete(enemy.id)
+                self.enemies.remove(enemy)
                 self.score += 1
-                self.c.itemconfig(self.score_display,
-                                  text=f"Score: {self.score}")
+                self.canvas.itemconfig(self.score_display, text=f"Score: {self.score}")
 
-    def pause(self, event=None):
+    def pause(self, *_):
         mixer.music.pause()
-        prompt = askyesno(title="Game paused",
-                          message="Click on 'Yes' to resume game, 'No' to exit.")
-        mixer.music.unpause()
+        prompt = askyesno(
+            title="Game paused", message="Click on 'Yes' to resume game, 'No' to exit."
+        )
         if not prompt:
-            handle_close()
-
-
-def handle_close():
-    global closed
-    closed = True
+            sys.exit()
+        mixer.music.unpause()
 
 
 while True:
-    if (username := askstring(title="Welcome!", prompt="What's your name?")) == None:
-        handle_close()
-        quit()
+    if (username := askstring(title="Welcome!", prompt="What's your name?")) is None:
+        sys.exit()
     elif ":" in username:
-        showerror(title="Invalid input", message="Username cannot contain character ':'.")
+        showerror(
+            title="Invalid input", message="Username cannot contain character ':'."
+        )
     else:
         break
 
-showinfo(title="Jumper",
-         message=f"""Hello {username}!
+showinfo(
+    title="Jumper",
+    message=f"""Hello {username}!
 Press {JUMP_KEY} to jump.
 Press {PAUSE_KEY} to pause the game.
 Avoid enemies.
 Get to the top of the leaderboard!
-Click 'OK' to play.""")
+Click 'OK' to play.""",
+)
 
-# Main window
 root = tk.Tk()
 
 try:
@@ -204,18 +285,11 @@ try:
     ENEMY_COSTUMES = [tk.PhotoImage(file=i) for i in ENEMY_ASSETS]
     PARTICLE_COSTUMES = [tk.PhotoImage(file=i) for i in PARTICLE_ASSETS]
 except FileNotFoundError:
-    showerror(title="Error",
-              message="Could not load graphics. Check that the specified image files have the correct path.")
-    quit()
+    showerror(
+        title="Error",
+        message="Graphics not found.",
+    )
+    sys.exit()
 
-root.title("Jumper")
-root.iconphoto(False, PLAYER_COSTUMES[0])
-root.resizable(False, False)
-Jumper = Game(root, username)
-# Stop when the window is closed
-closed = False
-root.protocol("WM_DELETE_WINDOW", Jumper.pause)
-
-Jumper.loop()
-
-quit()
+app = Game(root, username)
+app.loop()
